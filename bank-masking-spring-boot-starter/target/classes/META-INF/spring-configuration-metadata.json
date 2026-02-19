@@ -10,8 +10,7 @@
     {
       "name": "p11.masking.enabled",
       "type": "java.lang.Boolean",
-      "sourceType": "com.p11.masking.config.MaskingProperties",
-      "defaultValue": true
+      "sourceType": "com.p11.masking.config.MaskingProperties"
     },
     {
       "name": "p11.masking.fields",
@@ -21,8 +20,7 @@
     {
       "name": "p11.masking.mask-character",
       "type": "java.lang.Character",
-      "sourceType": "com.p11.masking.config.MaskingProperties",
-      "defaultValue": "*"
+      "sourceType": "com.p11.masking.config.MaskingProperties"
     },
     {
       "name": "p11.masking.mask-style",

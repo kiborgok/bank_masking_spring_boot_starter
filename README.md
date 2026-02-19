@@ -1,36 +1,6 @@
 Bank Masking Spring Boot Starter — Technical Assessment
 A reusable Spring Boot Starter that transparently masks sensitive fields in log output, paired with a Books CRUD API that demonstrates its usage.
 
-Repository Structure
-bank-masking-project/
-├── pom.xml
-├── README.md
-│
-├── bank-masking-spring-boot-starter/     # Module 1
-│   └── src/main/java/com/p11/masking/
-│       ├── annotation/Mask.java          # @Mask – declarative field masking
-│       ├── config/
-│       │   ├── MaskingProperties.java    # @ConfigurationProperties (p11.masking.*)
-│       │   └── MaskingAutoConfiguration.java
-│       ├── core/
-│       │   ├── MaskStyle.java            # FULL / PARTIAL / SHOW_LAST
-│       │   └── MaskingService.java       # Core masking engine
-│       ├── jackson/
-│       │   ├── MaskingBeanSerializerModifier.java
-│       │   └── MaskingPropertyWriter.java
-│       └── logback/
-│           └── MaskingTurboFilter.java   # Logback interception layer
-│
-└── bank-books-api-demo/                  # Module 2 – consumer application
-└── src/main/java/com/p11/books/
-├── controller/BookController.java
-├── service/BookService.java
-├── repository/BookRepository.java
-├── mapper/BookMapper.java
-├── dto/BookDto.java
-├── entity/Book.java
-└── exception/
-
 Architecture & Design Decisions
 1. Logback TurboFilter — Transparent Log Interception
    The MaskingTurboFilter is registered programmatically with Logback's LoggerContext at startup. It intercepts every log call before the message is formatted. For each POJO argument in a log statement:
