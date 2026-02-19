@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MaskingPropertyWriter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Bank Masking Spring Boot Starter</a> &gt; <a href="index.source.html" class="el_package">com.p11.masking.jackson</a> &gt; <span class="el_source">MaskingPropertyWriter.java</span></div><h1>MaskingPropertyWriter.java</h1><pre class="source lang-java linenums">package com.p11.masking.jackson;
+
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
+import com.p11.masking.annotation.Mask;
+import com.p11.masking.config.MaskingProperties;
+import com.p11.masking.core.MaskStyle;
+
+public class MaskingPropertyWriter extends BeanPropertyWriter {
+
+    private final MaskingProperties properties;
+    private final Mask maskAnnotation;
+
+    protected MaskingPropertyWriter(BeanPropertyWriter base, MaskingProperties properties) {
+<span class="fc" id="L16">        super(base);</span>
+<span class="fc" id="L17">        this.properties = properties;</span>
+<span class="fc" id="L18">        this.maskAnnotation = base.getAnnotation(Mask.class);</span>
+<span class="fc" id="L19">    }</span>
+
+    @Override
+    public void serializeAsField(Object bean, JsonGenerator gen, SerializerProvider prov)
+            throws Exception {
+<span class="fc" id="L24">        Object rawValue = get(bean);</span>
+<span class="fc bfc" id="L25" title="All 2 branches covered.">        if (rawValue == null) {</span>
+<span class="pc bpc" id="L26" title="1 of 2 branches missed.">            if (!_suppressNulls) {</span>
+<span class="fc" id="L27">                gen.writeFieldName(_name.getValue());</span>
+<span class="fc" id="L28">                gen.writeNull();</span>
+            }
+<span class="fc" id="L30">            return;</span>
+        }
+<span class="fc" id="L32">        gen.writeStringField(_name.getValue(), applyMask(rawValue.toString()));</span>
+<span class="fc" id="L33">    }</span>
+
+    @Override
+    public void serializeAsElement(Object bean, JsonGenerator gen, SerializerProvider prov)
+            throws Exception {
+<span class="nc" id="L38">        Object rawValue = get(bean);</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">        if (rawValue == null) {</span>
+<span class="nc bnc" id="L40" title="All 2 branches missed.">            if (!_suppressNulls) {</span>
+<span class="nc" id="L41">                gen.writeNull();</span>
+            }
+<span class="nc" id="L43">            return;</span>
+        }
+<span class="nc" id="L45">        gen.writeString(applyMask(rawValue.toString()));</span>
+<span class="nc" id="L46">    }</span>
+
+    private String applyMask(String value) {
+<span class="pc bpc" id="L49" title="1 of 2 branches missed.">        if (value == null) return null;</span>
+        MaskStyle style;
+        char maskChar;
+<span class="pc bpc" id="L52" title="1 of 2 branches missed.">        if (maskAnnotation != null) {</span>
+<span class="nc" id="L53">            style = maskAnnotation.style();</span>
+<span class="nc bnc" id="L54" title="All 2 branches missed.">            maskChar = (maskAnnotation.maskChar() == '\0')</span>
+<span class="nc" id="L55">                    ? properties.getMaskCharacter()</span>
+<span class="nc" id="L56">                    : maskAnnotation.maskChar();</span>
+        } else {
+<span class="fc" id="L58">            style = properties.getMaskStyle();</span>
+<span class="fc" id="L59">            maskChar = properties.getMaskCharacter();</span>
+        }
+<span class="fc" id="L61">        return style.apply(value, maskChar);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

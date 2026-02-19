@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MaskingService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Bank Masking Spring Boot Starter</a> &gt; <a href="index.source.html" class="el_package">com.p11.masking.core</a> &gt; <span class="el_source">MaskingService.java</span></div><h1>MaskingService.java</h1><pre class="source lang-java linenums">package com.p11.masking.core;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.p11.masking.config.MaskingProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class MaskingService {
+
+<span class="fc" id="L10">    private static final Logger log = LoggerFactory.getLogger(MaskingService.class);</span>
+
+    private final MaskingProperties properties;
+    private final ObjectMapper maskingObjectMapper;
+
+<span class="fc" id="L15">    public MaskingService(MaskingProperties properties, ObjectMapper maskingObjectMapper) {</span>
+<span class="fc" id="L16">        this.properties = properties;</span>
+<span class="fc" id="L17">        this.maskingObjectMapper = maskingObjectMapper;</span>
+<span class="fc" id="L18">    }</span>
+
+    public String toMaskedJson(Object object) {
+<span class="fc bfc" id="L21" title="All 2 branches covered.">        if (object == null) {</span>
+<span class="fc" id="L22">            return &quot;null&quot;;</span>
+        }
+        try {
+<span class="fc" id="L25">            return maskingObjectMapper.writeValueAsString(object);</span>
+<span class="nc" id="L26">        } catch (Exception e) {</span>
+<span class="nc" id="L27">            log.warn(&quot;MaskingService: failed to serialise object of type {}: {}&quot;,</span>
+<span class="nc" id="L28">                    object.getClass().getSimpleName(), e.getMessage());</span>
+<span class="nc" id="L29">            return object.toString();</span>
+        }
+    }
+
+    public String mask(String value) {
+<span class="fc bfc" id="L34" title="All 4 branches covered.">        if (!properties.isEnabled() || value == null) {</span>
+<span class="fc" id="L35">            return value;</span>
+        }
+<span class="fc" id="L37">        return properties.getMaskStyle().apply(value, properties.getMaskCharacter());</span>
+    }
+
+
+    public String mask(String value, MaskStyle style, char maskChar) {
+<span class="nc bnc" id="L42" title="All 4 branches missed.">        if (!properties.isEnabled() || value == null) {</span>
+<span class="nc" id="L43">            return value;</span>
+        }
+<span class="nc bnc" id="L45" title="All 2 branches missed.">        char effectiveMaskChar = (maskChar == '\0') ? properties.getMaskCharacter() : maskChar;</span>
+<span class="nc" id="L46">        return style.apply(value, effectiveMaskChar);</span>
+    }
+
+    public MaskingProperties getProperties() {
+<span class="nc" id="L50">        return properties;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

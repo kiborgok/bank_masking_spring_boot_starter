@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MaskingAutoConfiguration.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Bank Masking Spring Boot Starter</a> &gt; <a href="index.source.html" class="el_package">com.p11.masking.config</a> &gt; <span class="el_source">MaskingAutoConfiguration.java</span></div><h1>MaskingAutoConfiguration.java</h1><pre class="source lang-java linenums">package com.p11.masking.config;
+
+import ch.qos.logback.classic.LoggerContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.p11.masking.core.MaskingService;
+import com.p11.masking.jackson.MaskingBeanSerializerModifier;
+import com.p11.masking.logback.MaskingTurboFilter;
+import org.slf4j.ILoggerFactory;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+
+@AutoConfiguration
+@ConditionalOnProperty(
+        prefix = &quot;p11.masking&quot;,
+        name = &quot;enabled&quot;,
+        havingValue = &quot;true&quot;,
+        matchIfMissing = true
+)
+@EnableConfigurationProperties(MaskingProperties.class)
+<span class="nc" id="L27">public class MaskingAutoConfiguration {</span>
+
+    @Bean(name = &quot;maskingObjectMapper&quot;)
+    @ConditionalOnMissingBean(name = &quot;maskingObjectMapper&quot;)
+    public ObjectMapper maskingObjectMapper(MaskingProperties properties) {
+<span class="nc" id="L32">        ObjectMapper mapper = new ObjectMapper();</span>
+<span class="nc" id="L33">        mapper.registerModule(new JavaTimeModule());</span>
+
+<span class="nc" id="L35">        SimpleModule maskingModule = new SimpleModule(&quot;MaskingModule&quot;);</span>
+<span class="nc" id="L36">        maskingModule.setSerializerModifier(new MaskingBeanSerializerModifier(properties));</span>
+<span class="nc" id="L37">        mapper.registerModule(maskingModule);</span>
+
+<span class="nc" id="L39">        return mapper;</span>
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public MaskingService maskingService(
+            MaskingProperties properties,
+            @Qualifier(&quot;maskingObjectMapper&quot;) ObjectMapper maskingObjectMapper) {
+<span class="nc" id="L47">        return new MaskingService(properties, maskingObjectMapper);</span>
+    }
+
+    @Bean
+    public MaskingTurboFilter maskingTurboFilter(MaskingService maskingService) {
+<span class="nc" id="L52">        MaskingTurboFilter filter = new MaskingTurboFilter(maskingService);</span>
+<span class="nc" id="L53">        filter.setName(&quot;MaskingTurboFilter&quot;);</span>
+<span class="nc" id="L54">        filter.start();</span>
+
+<span class="nc" id="L56">        ILoggerFactory factory = LoggerFactory.getILoggerFactory();</span>
+<span class="nc bnc" id="L57" title="All 2 branches missed.">        if (factory instanceof LoggerContext loggerContext) {</span>
+<span class="nc" id="L58">            loggerContext.addTurboFilter(filter);</span>
+        }
+
+<span class="nc" id="L61">        return filter;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

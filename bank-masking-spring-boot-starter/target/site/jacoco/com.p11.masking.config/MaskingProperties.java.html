@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MaskingProperties.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Bank Masking Spring Boot Starter</a> &gt; <a href="index.source.html" class="el_package">com.p11.masking.config</a> &gt; <span class="el_source">MaskingProperties.java</span></div><h1>MaskingProperties.java</h1><pre class="source lang-java linenums">package com.p11.masking.config;
+
+import com.p11.masking.core.MaskStyle;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+@ConfigurationProperties(prefix = &quot;p11.masking&quot;)
+<span class="fc" id="L11">public class MaskingProperties {</span>
+
+<span class="fc" id="L13">    private boolean enabled = true;</span>
+
+<span class="fc" id="L15">    private Set&lt;String&gt; fields = new HashSet&lt;&gt;();</span>
+
+<span class="fc" id="L17">    private MaskStyle maskStyle = MaskStyle.PARTIAL;</span>
+
+<span class="fc" id="L19">    private char maskCharacter = '*';</span>
+
+    // Getters &amp; Setters
+
+    public boolean isEnabled() {
+<span class="fc" id="L24">        return enabled;</span>
+    }
+
+    public void setEnabled(boolean enabled) {
+<span class="fc" id="L28">        this.enabled = enabled;</span>
+<span class="fc" id="L29">    }</span>
+
+    public Set&lt;String&gt; getFields() {
+<span class="fc" id="L32">        return fields;</span>
+    }
+
+    public void setFields(List&lt;String&gt; fields) {
+<span class="pc bpc" id="L36" title="1 of 2 branches missed.">        if (fields != null) {</span>
+<span class="fc" id="L37">            this.fields = new HashSet&lt;&gt;(fields);</span>
+        }
+<span class="fc" id="L39">    }</span>
+
+    public MaskStyle getMaskStyle() {
+<span class="fc" id="L42">        return maskStyle;</span>
+    }
+
+    public void setMaskStyle(MaskStyle maskStyle) {
+<span class="fc" id="L46">        this.maskStyle = maskStyle;</span>
+<span class="fc" id="L47">    }</span>
+
+    public char getMaskCharacter() {
+<span class="fc" id="L50">        return maskCharacter;</span>
+    }
+
+    public void setMaskCharacter(char maskCharacter) {
+<span class="fc" id="L54">        this.maskCharacter = maskCharacter;</span>
+<span class="fc" id="L55">    }</span>
+
+    /**
+     * Convenience method – returns true if the given field name is configured
+     * as sensitive (case-insensitive comparison).
+     */
+    public boolean isSensitiveField(String fieldName) {
+<span class="fc bfc" id="L62" title="All 2 branches covered.">        if (fieldName == null) {</span>
+<span class="fc" id="L63">            return false;</span>
+        }
+<span class="fc" id="L65">        return fields.stream().anyMatch(f -&gt; f.equalsIgnoreCase(fieldName));</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,34 @@
+{
+  "groups": [
+    {
+      "name": "p11.masking",
+      "type": "com.p11.masking.config.MaskingProperties",
+      "sourceType": "com.p11.masking.config.MaskingProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "p11.masking.enabled",
+      "type": "java.lang.Boolean",
+      "sourceType": "com.p11.masking.config.MaskingProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "p11.masking.fields",
+      "type": "java.util.Set<java.lang.String>",
+      "sourceType": "com.p11.masking.config.MaskingProperties"
+    },
+    {
+      "name": "p11.masking.mask-character",
+      "type": "java.lang.Character",
+      "sourceType": "com.p11.masking.config.MaskingProperties",
+      "defaultValue": "*"
+    },
+    {
+      "name": "p11.masking.mask-style",
+      "type": "com.p11.masking.core.MaskStyle",
+      "sourceType": "com.p11.masking.config.MaskingProperties"
+    }
+  ],
+  "hints": []
+}

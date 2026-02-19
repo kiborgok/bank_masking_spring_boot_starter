@@ -1,0 +1,54 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: bank-books-api-demo
+
+  datasource:
+    url: jdbc:h2:mem:booksdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+
+# Masking Starter Configuration
+p11:
+  masking:
+    enabled: true
+    fields:
+      - email
+      - phoneNumber
+      - ssn
+      - creditCardNumber
+    mask-style: PARTIAL
+    mask-character: "*"
+
+# Logging
+logging:
+  level:
+    com.p11.books: DEBUG
+    com.p11.masking: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# SpringDoc / OpenAPI
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method

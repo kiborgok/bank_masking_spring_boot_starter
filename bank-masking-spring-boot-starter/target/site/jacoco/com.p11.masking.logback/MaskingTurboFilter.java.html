@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MaskingTurboFilter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Bank Masking Spring Boot Starter</a> &gt; <a href="index.source.html" class="el_package">com.p11.masking.logback</a> &gt; <span class="el_source">MaskingTurboFilter.java</span></div><h1>MaskingTurboFilter.java</h1><pre class="source lang-java linenums">package com.p11.masking.logback;
+
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
+import ch.qos.logback.classic.turbo.TurboFilter;
+import ch.qos.logback.core.spi.FilterReply;
+import com.p11.masking.core.MaskingService;
+import org.slf4j.Marker;
+
+public class MaskingTurboFilter extends TurboFilter {
+
+    private final MaskingService maskingService;
+
+<span class="nc" id="L14">    public MaskingTurboFilter(MaskingService maskingService) {</span>
+<span class="nc" id="L15">        this.maskingService = maskingService;</span>
+<span class="nc" id="L16">    }</span>
+
+    @Override
+    public FilterReply decide(Marker marker,
+                               Logger logger,
+                               Level level,
+                               String format,
+                               Object[] params,
+                               Throwable t) {
+
+<span class="nc bnc" id="L26" title="All 6 branches missed.">        if (!maskingService.getProperties().isEnabled() || params == null || params.length == 0) {</span>
+<span class="nc" id="L27">            return FilterReply.NEUTRAL;</span>
+        }
+
+<span class="nc bnc" id="L30" title="All 2 branches missed.">        if (!logger.isEnabledFor(level)) {</span>
+<span class="nc" id="L31">            return FilterReply.NEUTRAL;</span>
+        }
+
+<span class="nc bnc" id="L34" title="All 2 branches missed.">        for (int i = 0; i &lt; params.length; i++) {</span>
+<span class="nc" id="L35">            Object param = params[i];</span>
+<span class="nc bnc" id="L36" title="All 4 branches missed.">            if (param != null &amp;&amp; isMaskable(param)) {</span>
+<span class="nc" id="L37">                params[i] = maskingService.toMaskedJson(param);</span>
+            }
+        }
+
+<span class="nc" id="L41">        return FilterReply.NEUTRAL;</span>
+    }
+
+    private boolean isMaskable(Object param) {
+<span class="nc bnc" id="L45" title="All 8 branches missed.">        if (param instanceof String</span>
+                || param instanceof Number
+                || param instanceof Boolean
+                || param instanceof Character) {
+<span class="nc" id="L49">            return false;</span>
+        }
+
+<span class="nc bnc" id="L52" title="All 2 branches missed.">        if (param instanceof Throwable) {</span>
+<span class="nc" id="L53">            return false;</span>
+        }
+<span class="nc" id="L55">        return true;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

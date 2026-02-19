@@ -1,0 +1,10 @@
+/home/geek/Downloads/bank-masking-project/bank-books-api-demo/src/main/java/com/p11/books/entity/Book.java
+/home/geek/Downloads/bank-masking-project/bank-books-api-demo/src/main/java/com/p11/books/exception/BookNotFoundException.java
+/home/geek/Downloads/bank-masking-project/bank-books-api-demo/src/main/java/com/p11/books/controller/BookController.java
+/home/geek/Downloads/bank-masking-project/bank-books-api-demo/src/main/java/com/p11/books/exception/ErrorResponse.java
+/home/geek/Downloads/bank-masking-project/bank-books-api-demo/src/main/java/com/p11/books/BankBooksApiDemoApplication.java
+/home/geek/Downloads/bank-masking-project/bank-books-api-demo/src/main/java/com/p11/books/repository/BookRepository.java
+/home/geek/Downloads/bank-masking-project/bank-books-api-demo/src/main/java/com/p11/books/service/BookService.java
+/home/geek/Downloads/bank-masking-project/bank-books-api-demo/src/main/java/com/p11/books/exception/GlobalExceptionHandler.java
+/home/geek/Downloads/bank-masking-project/bank-books-api-demo/src/main/java/com/p11/books/dto/BookDto.java
+/home/geek/Downloads/bank-masking-project/bank-books-api-demo/src/main/java/com/p11/books/mapper/BookMapper.java

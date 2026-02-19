@@ -1,0 +1,4 @@
+com/p11/books/integration/BookControllerIntegrationTest.class
+com/p11/books/unit/BookMapperTest.class
+com/p11/books/unit/BookServiceTest.class
+com/p11/books/integration/MaskingIntegrationTest.class
